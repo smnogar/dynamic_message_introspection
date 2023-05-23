@@ -63,7 +63,11 @@ const TypeSupport * get_type_support(const InterfaceTypeName & interface_type)
 {
   // Load the type support library for the package containing the requested type
   std::string ts_lib_name;
+#ifdef __APPLE__
+  ts_lib_name = "lib" + interface_type.first + "__rosidl_typesupport_c.dylib";
+#else
   ts_lib_name = "lib" + interface_type.first + "__rosidl_typesupport_c.so";
+#endif
   RCUTILS_LOG_DEBUG_NAMED(
     "dynmsg_demo",
     "Loading type support library %s",

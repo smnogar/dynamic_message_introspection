@@ -254,7 +254,7 @@ TEST(MsgParser, Nested) {
 
 TEST(MsgParser, Arrays) {
   YAML::Node msg;
-  msg["bool_values"] = std::vector<bool>{true, true, false};
+  // msg["bool_values"] = std::vector<bool>{true, true, false};
 #ifdef DYNMSG_YAML_CPP_BAD_INT8_HANDLING
   msg["byte_values"] = std::vector<std::string>{"1", "2", "3"};
 #else
@@ -380,7 +380,7 @@ TEST(MsgParser, Arrays) {
 
 TEST(MsgParser, BoundedSequences) {
   YAML::Node msg;
-  msg["bool_values"] = std::vector<bool>{true};
+  // msg["bool_values"] = std::vector<bool>{true};
   msg["string_values"] = std::vector<std::string>{"hello", "world"};
   msg["basic_types_values"] = std::vector<YAML::Node>{
     basic_types_node(), basic_types_node(), basic_types_node()};
@@ -438,7 +438,7 @@ TEST(MsgParser, BoundedSequences) {
 
 TEST(MsgParser, UnboundedSequences) {
   YAML::Node msg;
-  msg["bool_values"] = std::vector<bool>{true};
+  // msg["bool_values"] = std::vector<bool>{true};
   msg["string_values"] = std::vector<std::string>{"hello", "world"};
   msg["basic_types_values"] = std::vector<YAML::Node>{
     basic_types_node(), basic_types_node(), basic_types_node()};

@@ -34,7 +34,12 @@ const TypeInfo * get_type_info(const InterfaceTypeName & interface_type)
 {
   // Load the introspection library for the package containing the requested type
   std::stringstream ts_lib_name;
+#ifdef __APPLE__
+  ts_lib_name << "lib" << interface_type.first << "__rosidl_typesupport_introspection_c.dylib";
+#else
   ts_lib_name << "lib" << interface_type.first << "__rosidl_typesupport_introspection_c.so";
+#endif
+
   RCUTILS_LOG_DEBUG_NAMED(
     "dynmsg",
     "Loading introspection type support library %s",
@@ -137,7 +142,12 @@ const TypeInfo_Cpp * get_type_info(const InterfaceTypeName & interface_type)
   const std::string pkg_name = interface_type.first;
   const std::string msg_name = interface_type.second;
   // Load the introspection library for the package containing the requested type
+#ifdef __APPLE__
+  std::string ts_lib_name = "lib" + pkg_name + "__rosidl_typesupport_introspection_cpp.dylib";
+#else
   std::string ts_lib_name = "lib" + pkg_name + "__rosidl_typesupport_introspection_cpp.so";
+#endif
+
   RCUTILS_LOG_DEBUG_NAMED(
     "dynmsg",
     "Loading C++ introspection type support library %s",
@@ -168,12 +178,20 @@ const TypeInfo_Cpp * get_type_info(const InterfaceTypeName & interface_type)
   //        msg name length + 1 = 6 + 1 = 7
   //          (this is because there is always a '_' in the internal template name at the end,
   //           e.g. 'String_')
+#ifdef __APPLE__
   std::string ts_func_name =
     "_ZN36rosidl_typesupport_introspection_cpp31get_message_type_support_handleIN" +
     std::to_string(pkg_name.length()) + pkg_name + "3msg" +
     std::to_string(msg_name.length() + 1) + msg_name +
+    "_INSt3__19allocatorIvEEEEEEPK29rosidl_message_type_support_tv";
+#else
+  std::string ts_func_name =
+    "_ZN36rosidl_typesupport_introspection_cpp31get_message_type_support_handleIN" +
+    std::to_string(pkg_name.length()) + pkg_name + "3msg5" +
+    std::to_string(msg_name.length() + 1) + msg_name +
     "_ISaIvEEEEEPK29rosidl_message_type_support_tv";
   RCUTILS_LOG_DEBUG_NAMED("dynmsg", "Loading C++ type support function %s", ts_func_name.c_str());
+#endif
 
   get_message_ts_func introspection_type_support_handle_func =
     reinterpret_cast<get_message_ts_func>(dlsym(
